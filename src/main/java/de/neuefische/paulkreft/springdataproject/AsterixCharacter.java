@@ -1,6 +1,7 @@
 package de.neuefische.paulkreft.springdataproject;
 
-public record Character(
+public record AsterixCharacter(
+
         String id,
         String name,
         int age,
