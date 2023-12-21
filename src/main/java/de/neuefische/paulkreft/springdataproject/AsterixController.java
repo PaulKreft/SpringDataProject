@@ -45,8 +45,12 @@ public class AsterixController {
 
     @GetMapping("/asterix/characters/")
     public List<AsterixCharacter> getCharacters(@RequestParam int age){
-        List<AsterixCharacter> all = characterRepository.findAll();
-        return all.stream().filter(asterixCharacter -> asterixCharacter.age() == age).toList();
+
+        List<AsterixCharacter> allByAge = characterRepository.findAllByAge(age);
+        return allByAge;
+        //List<AsterixCharacter> all = characterRepository.findAll();
+        // return all.stream().filter(asterixCharacter -> asterixCharacter.age() == age).toList();
+
     }
 
 }
