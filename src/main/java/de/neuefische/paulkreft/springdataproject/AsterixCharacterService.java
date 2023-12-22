@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -26,5 +28,15 @@ public class AsterixCharacterService {
         AsterixCharacter asterixCharacter = new AsterixCharacter(UUID.randomUUID().toString(), character.name(), character.age(), character.profession());
 
         return asterixCharacterRepository.save(asterixCharacter);
+    }
+
+    public AsterixCharacterResponse getCharacterById(String id) {
+        Optional<AsterixCharacter> asterixCharacter = asterixCharacterRepository.findById(id);
+
+        if (asterixCharacter.isPresent()) {
+            return new AsterixCharacterResponse(asterixCharacter.get().name(), asterixCharacter.get().age(), asterixCharacter.get().profession());
+        }
+
+        throw new NoSuchElementException("No Character with id: " + id + " found");
     }
 }

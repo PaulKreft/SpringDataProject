@@ -18,8 +18,12 @@ public class AsterixController {
 
     @PostMapping
     public AsterixCharacter postCharacters(@RequestBody AsterixCharacterRequest asterixCharacterRequest){
-        AsterixCharacter character = asterixCharacterService.createCharacter(asterixCharacterRequest);
-        return character;
+        return asterixCharacterService.createCharacter(asterixCharacterRequest);
+    }
+
+    @GetMapping("/{id}")
+    public AsterixCharacterResponse getCharacterById(@PathVariable String id) {
+        return asterixCharacterService.getCharacterById(id);
     }
 
 //    @PutMapping
