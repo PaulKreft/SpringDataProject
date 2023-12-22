@@ -1,18 +1,18 @@
 package de.neuefische.paulkreft.springdataproject;
 
-import lombok.AllArgsConstructor;
+import de.neuefische.paulkreft.springdataproject.utils.IdService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class AsterixCharacterService {
     private final AsterixCharacterRepository asterixCharacterRepository;
+    private final IdService idService;
 
     public List<AsterixCharacterResponse> getAllCharacters() {
         List<AsterixCharacter> asterixCharacterList = asterixCharacterRepository.findAll();
@@ -25,7 +25,7 @@ public class AsterixCharacterService {
     }
 
     public AsterixCharacter createCharacter(AsterixCharacterRequest character) {
-        AsterixCharacter asterixCharacter = new AsterixCharacter(UUID.randomUUID().toString(), character.name(), character.age(), character.profession());
+        AsterixCharacter asterixCharacter = new AsterixCharacter(idService.randomId(), character.name(), character.age(), character.profession());
 
         return asterixCharacterRepository.save(asterixCharacter);
     }
