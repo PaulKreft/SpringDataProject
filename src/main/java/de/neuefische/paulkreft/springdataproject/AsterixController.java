@@ -4,53 +4,52 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
+@RequestMapping("/asterix/characters")
 @RequiredArgsConstructor
 public class AsterixController {
-
-    private final CharacterRepository characterRepository;
-
-    @GetMapping("/asterix/characters")
-    public List<AsterixCharacter> getCharacters() {
-        return characterRepository.findAll();
-    }
-
-    @PostMapping("/asterix/characters")
-    public void postCharacters(@RequestBody AsterixCharacter asterixCharacter){
-        characterRepository.save(asterixCharacter);
-        System.out.println("character is added");
-    }
-
-    @PutMapping("/asterix/characters")
-    public void putCharacters(@RequestBody AsterixCharacter asterixCharacter){
-
-        Optional<AsterixCharacter> byId = characterRepository.findById(asterixCharacter.id());
-        if (byId.isPresent()){
-            characterRepository.deleteById(asterixCharacter.id());
-            characterRepository.save(asterixCharacter);
-            System.out.println("character is edited");
-        }
-    }
-
-    @DeleteMapping("/asterix/characters/{id}")
-    public void deleteCharacters(@PathVariable String id){
-        Optional<AsterixCharacter> byId = characterRepository.findById(id);
-        if (byId.isPresent()){
-            characterRepository.deleteById(id);
-            System.out.println("character is deleted");
-        }
-    }
-
-    @GetMapping("/asterix/characters/")
-    public List<AsterixCharacter> getCharacters(@RequestParam int age){
-
-        List<AsterixCharacter> allByAge = characterRepository.findAllByAge(age);
-        return allByAge;
-        //List<AsterixCharacter> all = characterRepository.findAll();
-        // return all.stream().filter(asterixCharacter -> asterixCharacter.age() == age).toList();
+    private final AsterixCharacterService asterixCharacterService;
+    @GetMapping
+    public List<AsterixCharacterResponse> getCharacters() {
+        return asterixCharacterService.findAllCharacters();
 
     }
+
+    @PostMapping
+    public AsterixCharacter postCharacters(@RequestBody AsterixCharacterRequest asterixCharacterRequest){
+        AsterixCharacter character = asterixCharacterService.createCharacter(asterixCharacterRequest);
+        return character;
+    }
+
+//    @PutMapping
+//    public void putCharacters(@RequestBody AsterixCharacter asterixCharacter){
+//
+//        Optional<AsterixCharacter> byId = asterixCharacterService.findById(asterixCharacter.id());
+//        if (byId.isPresent()){
+//            asterixCharacterService.deleteById(asterixCharacter.id());
+//            asterixCharacterService.save(asterixCharacter);
+//            System.out.println("character is edited");
+//        }
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public void deleteCharacters(@PathVariable String id){
+//        Optional<AsterixCharacter> byId = asterixCharacterService.findById(id);
+//        if (byId.isPresent()){
+//            asterixCharacterService.deleteById(id);
+//            System.out.println("character is deleted");
+//        }
+//    }
+//
+//    @GetMapping
+//    public List<AsterixCharacter> getCharacters(@RequestParam int age){
+//
+//        List<AsterixCharacter> allByAge = asterixCharacterService.findAllByAge(age);
+//        return allByAge;
+//        //List<AsterixCharacter> all = characterRepository.findAll();
+//        // return all.stream().filter(asterixCharacter -> asterixCharacter.age() == age).toList();
+//
+//    }
 
 }

@@ -5,11 +5,10 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
-public interface CharacterRepository extends MongoRepository<AsterixCharacter, String> {
+public interface AsterixCharacterRepository extends MongoRepository<AsterixCharacter, String> {
 
-       @Query()
-       List<AsterixCharacter>findAllByAge(int age);
+//       @Query()
+//       List<AsterixCharacter>findAllByAge(int age);
 }
