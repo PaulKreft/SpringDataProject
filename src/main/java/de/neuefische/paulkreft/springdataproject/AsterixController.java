@@ -12,7 +12,7 @@ public class AsterixController {
     private final AsterixCharacterService asterixCharacterService;
     @GetMapping
     public List<AsterixCharacterResponse> getCharacters() {
-        return asterixCharacterService.findAllCharacters();
+        return asterixCharacterService.getAllCharacters();
 
     }
 

@@ -12,7 +12,7 @@ import java.util.UUID;
 public class AsterixCharacterService {
     private final AsterixCharacterRepository asterixCharacterRepository;
 
-    public List<AsterixCharacterResponse> findAllCharacters() {
+    public List<AsterixCharacterResponse> getAllCharacters() {
         List<AsterixCharacter> asterixCharacterList = asterixCharacterRepository.findAll();
 
         List<AsterixCharacterResponse> asterixCharacterResponseList = asterixCharacterList.stream()
