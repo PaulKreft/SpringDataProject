@@ -17,8 +17,8 @@ public class AsterixController {
     }
 
     @PostMapping
-    public AsterixCharacter postCharacters(@RequestBody AsterixCharacterRequest asterixCharacterRequest){
-        return asterixCharacterService.createCharacter(asterixCharacterRequest);
+    public AsterixCharacter postCharacters(@RequestBody AsterixCharacterRequest request){
+        return asterixCharacterService.createCharacter(request);
     }
 
     @GetMapping("/{id}")
@@ -26,34 +26,13 @@ public class AsterixController {
         return asterixCharacterService.getCharacterById(id);
     }
 
-//    @PutMapping
-//    public void putCharacters(@RequestBody AsterixCharacter asterixCharacter){
-//
-//        Optional<AsterixCharacter> byId = asterixCharacterService.findById(asterixCharacter.id());
-//        if (byId.isPresent()){
-//            asterixCharacterService.deleteById(asterixCharacter.id());
-//            asterixCharacterService.save(asterixCharacter);
-//            System.out.println("character is edited");
-//        }
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public void deleteCharacters(@PathVariable String id){
-//        Optional<AsterixCharacter> byId = asterixCharacterService.findById(id);
-//        if (byId.isPresent()){
-//            asterixCharacterService.deleteById(id);
-//            System.out.println("character is deleted");
-//        }
-//    }
-//
-//    @GetMapping
-//    public List<AsterixCharacter> getCharacters(@RequestParam int age){
-//
-//        List<AsterixCharacter> allByAge = asterixCharacterService.findAllByAge(age);
-//        return allByAge;
-//        //List<AsterixCharacter> all = characterRepository.findAll();
-//        // return all.stream().filter(asterixCharacter -> asterixCharacter.age() == age).toList();
-//
-//    }
+    @DeleteMapping("/{id}")
+    public AsterixCharacter deleteCharacterById(@PathVariable String id) {
+        return asterixCharacterService.deleteCharacterById(id);
+    }
 
+     @PutMapping("/{id}")
+    public AsterixCharacter updateCharacterById(@PathVariable String id, @RequestBody AsterixCharacterRequest request) {
+      return asterixCharacterService.updateCharacterById(id, request);
+     }
 }

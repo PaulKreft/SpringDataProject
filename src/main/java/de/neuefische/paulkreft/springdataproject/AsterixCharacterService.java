@@ -39,4 +39,20 @@ public class AsterixCharacterService {
 
         throw new NoSuchElementException("No Character with id: " + id + " found");
     }
+
+    public AsterixCharacter deleteCharacterById(String id) {
+        Optional<AsterixCharacter> asterixCharacter = asterixCharacterRepository.findById(id);
+
+        if (asterixCharacter.isPresent()) {
+            asterixCharacterRepository.deleteById(id);
+            return asterixCharacter.get();
+        }
+
+        throw new NoSuchElementException("No Character with id: " + id + " found");
+    }
+
+    public AsterixCharacter updateCharacterById(String id, AsterixCharacterRequest character) {
+        deleteCharacterById(id);
+        return asterixCharacterRepository.save(new AsterixCharacter(id, character.name(), character.age(), character.profession()));
+    }
 }
