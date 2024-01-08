@@ -52,7 +52,7 @@ public class AsterixCharacterService {
     }
 
     public AsterixCharacter updateCharacterById(String id, AsterixCharacterRequest character) {
-        deleteCharacterById(id);
-        return asterixCharacterRepository.save(new AsterixCharacter(id, character.name(), character.age(), character.profession()));
+        AsterixCharacter asterixCharacter = new AsterixCharacter(id, character.name(), character.age(), character.profession());
+        return asterixCharacterRepository.save(asterixCharacter);
     }
 }

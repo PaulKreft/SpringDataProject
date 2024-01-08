@@ -10,6 +10,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AsterixController {
     private final AsterixCharacterService asterixCharacterService;
+
     @GetMapping
     public List<AsterixCharacterResponse> getCharacters() {
         return asterixCharacterService.getAllCharacters();
@@ -17,7 +18,7 @@ public class AsterixController {
     }
 
     @PostMapping
-    public AsterixCharacter postCharacters(@RequestBody AsterixCharacterRequest request){
+    public AsterixCharacter postCharacters(@RequestBody AsterixCharacterRequest request) {
         return asterixCharacterService.createCharacter(request);
     }
 
@@ -31,8 +32,8 @@ public class AsterixController {
         return asterixCharacterService.deleteCharacterById(id);
     }
 
-     @PutMapping("/{id}")
+    @PutMapping("/{id}")
     public AsterixCharacter updateCharacterById(@PathVariable String id, @RequestBody AsterixCharacterRequest request) {
-      return asterixCharacterService.updateCharacterById(id, request);
-     }
+        return asterixCharacterService.updateCharacterById(id, request);
+    }
 }
