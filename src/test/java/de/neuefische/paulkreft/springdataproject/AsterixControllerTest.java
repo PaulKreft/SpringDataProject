@@ -1,6 +1,8 @@
 package de.neuefische.paulkreft.springdataproject;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AsterixIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
@@ -25,12 +28,25 @@ class AsterixIntegrationTest {
     @Autowired
     private AsterixCharacterRepository asterixCharacterRepository;
 
+    @BeforeAll
+    public void init() throws Exception {
+        mockMvc.perform(post("/asterix/characters")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                                                        
+                            {
+                            "name":"TestName",
+                            "age":10,
+                            "profession":"TestProfession"
+                            }
+                             
+                        """));
+    }
+
+
     @DirtiesContext
     @Test
     public void getCharactersTest_shouldReturnListWithOneObject_whenOneObjectWasSavedInRepository() throws Exception {
-        AsterixCharacter asterixCharacter = new AsterixCharacter("1", "TestName", 10, "TestProfession");
-        asterixCharacterRepository.save(asterixCharacter);
-
         MvcResult result = mockMvc.perform(get("/asterix/characters")).
                 andExpect(status().isOk())
                 .andExpect(content().json(
@@ -55,7 +71,7 @@ class AsterixIntegrationTest {
         MvcResult mvcResult = mockMvc.perform(post("/asterix/characters")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                                
+                                                                
                                     {
                                     "name":"TestName",
                                     "age":10,
@@ -85,21 +101,19 @@ class AsterixIntegrationTest {
     @Test
     public void getCharacterByIdTest_shouldReturnListWithObjectWithSpecifiedId_whenOneSpecificObjectWasRequested() throws Exception {
         // GIVEN
-        AsterixCharacter asterixCharacter = new AsterixCharacter("1", "TestName", 10, "TestProfession");
-        asterixCharacterRepository.save(asterixCharacter);
-
+        // see @BeforeAll
         // WHEN
         mockMvc.perform(get("/asterix/characters/1"))
                 // THEN
                 .andExpect(status().isOk())
                 .andExpect(content().json(
                         """
-                                    {
-                                    "name":"TestName",
-                                    "age":10,
-                                    "profession":"TestProfession"
-                                    }
-                                        """
+                                {
+                                "name":"TestName",
+                                "age":10,
+                                "profession":"TestProfession"
+                                }
+                                    """
                 ));
 
     }
@@ -109,8 +123,9 @@ class AsterixIntegrationTest {
     public void deleteCharacterTest_shouldDeleteObject_whenObjectExists() throws Exception {
         // GIVEN
         String objectId = "1";
-        AsterixCharacter asterixCharacter = new AsterixCharacter(objectId, "TestName", 10, "TestProfession");
-        asterixCharacterRepository.save(asterixCharacter);
+        // happens in @BeforeAll
+        // AsterixCharacter asterixCharacter = new AsterixCharacter(objectId, "TestName", 10, "TestProfession");
+        // asterixCharacterRepository.save(asterixCharacter);
 
         // WHEN
         mockMvc.perform(delete("/asterix/characters/{id}", objectId))
@@ -133,36 +148,32 @@ class AsterixIntegrationTest {
     @Test
     public void updateCharacterByIdTest_shouldReturnUpdatedObject_whenUpdatedObjectWasRequested() throws Exception {
         // GIVEN
-        AsterixCharacter initialCharacter = new AsterixCharacter("1", "TestName", 10, "TestProfession");
-        AsterixCharacterRequest updatedCharacter = new AsterixCharacterRequest( "TestNameUpdated", 10, "TestProfession");
-
-
-        asterixCharacterRepository.save(initialCharacter);
+        // see @BeforeAll
 
         // WHEN
         mockMvc.perform(put("/asterix/characters/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(
                                 """
-                                            {
-                                            "name":"TestNameUpdated",
-                                            "age":10,
-                                            "profession":"TestProfession"
-                                            }
-                                           """
+                                         {
+                                         "name":"TestNameUpdated",
+                                         "age":10,
+                                         "profession":"TestProfession"
+                                         }
+                                        """
 
                         ))
                 // THEN
                 .andExpect(status().isOk())
                 .andExpect(content().json(
                         """
-                                    {
-                                    "id": "1",
-                                    "name":"TestNameUpdated",
-                                    "age":10,
-                                    "profession":"TestProfession"
-                                    }
-                                   """
+                                 {
+                                 "id": "1",
+                                 "name":"TestNameUpdated",
+                                 "age":10,
+                                 "profession":"TestProfession"
+                                 }
+                                """
                 ));
 
     }
